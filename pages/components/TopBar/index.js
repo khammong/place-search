@@ -1,25 +1,33 @@
 import React, { useEffect, useState } from 'react'
+import axios from 'axios';
 import Image from 'next/image'
 import examplePic from '../../images/example.png'
-import icon from '../../images/searching.png'
 import { Container } from './styledComponent'
 
 export default function TopBar() {
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = useState("");
+  const API_KEY = 'AIzaSyBw-j-NF4SJRLKE8lE2xg0-glRftYYJ5Sg'
   const handleSubmit = e => {
     e.preventDefault();
     if (!value) return;
-    addTodo(value);
+    Searching(value);
     setValue("");
   };
-
-  useEffect(() => {
-    // dispatch(getEmployeeDepartmentRequest())
-  }, [])
-
-  const addTodo = title => {
-    // dispatch(addTodoListRequest({title, completed: false}))
+  var config = {
+    method: 'get',
+    url: `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${value}&key=${API_KEY}`,
+    headers: { }
   };
+  
+  const Searching = () => {
+    axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
 
   return (
     <Container>
